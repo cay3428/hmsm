@@ -37,6 +37,31 @@ namespace WebAPI.Controllers
 
         }
 
+
+        [HttpPost("update")]
+        public IActionResult Update(Product product)
+        {
+            var result = _productService.Update(product);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        
+        [HttpGet("delete")]
+        public ActionResult Delete(int productId)
+        {
+
+            var result = _productService.Delete(productId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {

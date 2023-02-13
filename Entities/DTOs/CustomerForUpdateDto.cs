@@ -1,11 +1,11 @@
-﻿
+﻿using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Entities.Concrete
+namespace Entities.DTOs
 {
-    public class Customer:IEntity
+    public class CustomerForUpdateDto : IDto
     {
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }
@@ -18,6 +18,7 @@ namespace Core.Entities.Concrete
         public string Country { get; set; }
         public int Phone { get; set; }
         public int Fax { get; set; }
+
 
 
     }

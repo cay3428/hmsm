@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Core.Entities.Concrete;
+using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,11 +15,54 @@ namespace WebAPI.Controllers
     public class AuthController : Controller
     {
         private IAuthService _authService;
+        private IUserOperationClaimsService _userOperationClaimsService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService,IUserOperationClaimsService userOperationClaimsService)
         {
+            _userOperationClaimsService = userOperationClaimsService;
             _authService = authService;
         }
+
+        [HttpGet("GetUserById")]
+        public ActionResult GetById(int id)
+        {
+            var userToLogin = _authService.GetById(id);
+            if (!userToLogin.Success)
+            {
+                return BadRequest(userToLogin.Message);
+            }
+
+            return Ok(userToLogin);
+        }
+
+        [HttpGet(template: "getusers")]
+        public IActionResult GetAll()
+        {
+
+            var result = _authService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+
+        }
+
+        [HttpGet("delete")]
+        public ActionResult Delete(int Id)
+        {
+
+            var result = _authService.Delete(Id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+
+
+
 
         [HttpPost("login")]
         public ActionResult Login(UserForLoginDto userForLoginDto)
@@ -55,9 +100,59 @@ namespace WebAPI.Controllers
 
             return BadRequest(result.Message);
 
-          
+
 
 
         }
+
+        [HttpPost("update")]
+        public ActionResult Update(UserForUpdateDto userForUpdateDto)
+        {
+
+            var result = _authService.Update(userForUpdateDto);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("operationupdate")]
+        public ActionResult OperationUpdate(UserOperationClaim userOperationClaims)
+        {
+
+            var result = _userOperationClaimsService.Update(userOperationClaims);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+
+        [HttpGet("GetByAuthId")]
+        public IActionResult GetByAuthId(int id)
+        {
+            var userToLogin = _userOperationClaimsService.GetByAuthId(id);
+            if (!userToLogin.Success)
+            {
+                return BadRequest(userToLogin.Message);
+            }
+
+            return Ok(userToLogin);
+        }
+
+
+
+
+
+
+
     }
+
+
+ 
 }
+ 
+
+

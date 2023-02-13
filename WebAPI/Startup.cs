@@ -40,6 +40,7 @@ namespace WebAPI
             services.AddControllers();
         
             services.AddCors();
+            services.AddSwaggerDocument();
 
             
 
@@ -79,6 +80,10 @@ namespace WebAPI
 
             app.UseHttpsRedirection();
 
+            app.UseSwaggerUi3();
+
+            app.UseOpenApi();
+
             app.UseRouting();
 
             app.UseAuthentication();
@@ -89,6 +94,8 @@ namespace WebAPI
             {
                 endpoints.MapControllers();
             });
+
+
            
         }
     }

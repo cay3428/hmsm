@@ -11,7 +11,7 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    //NuGet
+ 
     public class EfProductDal : EfEntityRepositoryBase<Product, OzztechContext>, IProductDal
     {
         public List<ProductDetailDto> GetProductDetails()

@@ -41,7 +41,7 @@ namespace Business.Concrete
 
           
             IResult result = BusinessRules.Run(CheckIfProductNameExists(product.ProductName),
-                CheckIfProductCountOfCategoryCorrect(product.CategoryId), CheckIfCategoryLimitExceded());
+                CheckIfProductCountOfCategoryCorrect(product.CategoryId),CheckIfProductIdExists(product.ProductId), CheckIfCategoryLimitExceded());
 
             if (result != null)
             {
@@ -54,8 +54,7 @@ namespace Business.Concrete
 
         }
 
-
-        //[CacheAspect] //key,value
+ 
         public IDataResult<List<Product>> GetAll()
         {
             if (DateTime.Now.Hour == 1)
@@ -124,6 +123,18 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+
+
+        private IResult CheckIfProductIdExists(int productId)
+        {
+            var result = _productDal.GetAll(p => p.ProductId == productId).Count;
+            if (result >= 15)
+            {
+                return new ErrorResult(Messages.ProductCountOfCategoryError);
+            }
+            return new SuccessResult();
+        }
+
         private IResult CheckIfCategoryLimitExceded()
         {
             var result = _categoryService.GetAll();
@@ -149,6 +160,18 @@ namespace Business.Concrete
             return null;
         }
 
+        public IResult Delete(int productId)
+        {
+            var product = _productDal.Get(r => r.ProductId == productId);
+            if (product != null)
+            {
+                _productDal.Delete(product);
 
+                return new SuccessResult(Messages.ProductDeleted);
+            }
+
+            return new ErrorResult("Cihaz Bulunamadı!");
+          
+        }
     }
 }

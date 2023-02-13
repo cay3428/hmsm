@@ -9,8 +9,8 @@ using System.Text;
 
 namespace DataAccess.Abstract
 {
-    public interface ICustomerDal : IEntityRepository<Customer>
+    public interface IUserOperationClaimsDal : IEntityRepository<UserOperationClaim>
     {
-        List<CustomerDetailDto> GetCustomerDetails(Expression<Func<Sales, bool>> filter = null);
+        List<UserOperationClaimsDto> GetOperationDetails(Expression<Func<UserOperationClaim, bool>> filter = null);
     }
 }
